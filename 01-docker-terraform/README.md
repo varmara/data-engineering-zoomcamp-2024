@@ -26,7 +26,9 @@ Which tag has the following text? - _Automatically remove the container when it 
 - `--rmc`
 + `--rm`
 
-**Solution:** --rm
+##### Solution:
+
+--rm
 
 #### Question 2. Understanding docker first run
 
@@ -40,7 +42,9 @@ What is version of the package _wheel_ ?
 - 23.0.1
 - 58.1.0
 
-**Solution:** 0.42.0
+##### Solution:
+
+0.42.0
 
 ### Prepare Postgres
 
@@ -68,7 +72,9 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 15859
 - 89009
 
-**Solution:** 15767
+##### Solution:
+
+15767
 
 ```sql
 select count(1) from green_taxi_data where date(lpep_pickup_datetime) = '2019-09-18';
@@ -84,7 +90,9 @@ Use the pick up time for your calculations.
 + 2019-09-26
 - 2019-09-21
 
-**Solution:** 2019-09-26
+##### Solution:
+
+2019-09-26
 
 ```sql
 SELECT date(lpep_pickup_datetime), trip_distance
@@ -104,7 +112,9 @@ Which were the 3 pick up Boroughs that had a sum of total_amount superior to 500
 - "Bronx" "Manhattan" "Queens"
 - "Brooklyn" "Queens" "Staten Island"
 
-**Solution:** "Brooklyn" "Manhattan" "Queens"
+##### Solution:
+
+"Brooklyn" "Manhattan" "Queens"
 
 ```sql
 WITH query AS (
@@ -117,17 +127,15 @@ WITH query AS (
  WHERE zones."Borough" != 'Unknown'
  GROUP BY zones."Borough"
  HAVING SUM(total_amount) > 50000;
-
 ```
 
 ```sql
 
-SELECT z."Borough", SUM(total_amount) AS borough_total
+SELECT z."Borough", **SUM(total_amount) AS borough_total
 FROM green_taxi_data AS g LEFT JOIN zones AS z ON g."PULocationID" = z."LocationID"
 WHERE z."Borough" != 'Unknown' AND DATE(lpep_pickup_datetime) = '2019-09-18'
 GROUP BY "Borough"
 HAVING SUM(total_amount) > 50000;
-
 ```
 
 #### Question 6. Largest tip
@@ -142,7 +150,9 @@ Note: it's not a typo, it's `tip` , not `trip`
 + JFK Airport
 - Long Island City/Queens Plaza
 
-**Solution:** JFK Airport
+##### Solution:
+
+JFK Airport
 
 ```sql
 SELECT 
@@ -178,6 +188,8 @@ terraform apply
 ```
 
 Paste the output of this command into the homework submission form.
+
+##### Solution:
 
 ```
 
@@ -246,9 +258,3 @@ Do you want to perform these actions?
 
 ```
 
-### Submitting the solutions
-
-* Form for submitting: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw01
-* You can submit your homework multiple times. In this case, only the last submission will be used.
-
-Deadline: 29 January, 23:00 CET
