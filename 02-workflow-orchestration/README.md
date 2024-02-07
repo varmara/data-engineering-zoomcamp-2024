@@ -3,11 +3,7 @@
 
 In this module, I learnt how to use the Mage platform to author and share data pipelines. 
 
-Mage is an open-source, hybrid framework for transforming and integrating data. ✨
-
-<div>
-<img src="https://github.com/mage-ai/assets/blob/main/mascots/mascots-shorter.jpeg?raw=true">
-</div>
+Mage is an open-source, hybrid framework for transforming and integrating data.
 
 - [`magic-zoomcamp`](magic-zoomcamp) - the Mage project with ETL pipelines created during classes and as a part of the homework
 - [`homework-2.md`](homework_2.md) - the homework quiz
