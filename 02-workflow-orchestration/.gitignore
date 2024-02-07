@@ -1,37 +1,5 @@
-**logs/
-**/ny_taxi_postgres_data/*
-serving_dir
-
-# Terraform files
-**/.terraform/*
-**.terraform.lock.*
-*.tfstate
-*.tfstate.*
-*.tfvars
-*.tfvars.json
-# Override files are usually used to override resources locally
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
-# example: *tfplan*
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
-*.zip
-
-# Crash log files
-crash.log
-crash.*.log
-
-# Ignore all .JSON files (credentials in this project)
-*.json
-**google_credentials.json
-
 # Byte-compiled / optimized / DLL files
-**__pycache__/
-.history
+__pycache__/
 *.py[cod]
 *$py.class
 .idea
@@ -45,7 +13,6 @@ develop-eggs/
 dist/
 downloads/
 eggs/
-
 .eggs/
 lib/
 lib64/
@@ -162,7 +129,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Mage data files
+# data files
 mage_ai/server/data/files/**
 default_repo
 instance_metadata.json
@@ -185,6 +152,11 @@ docker-compose.override.yml
 
 # DB files
 *.db
+
+# Terraform files
+**/.terraform*
+*.tfstate*
+*.zip
 
 # vscode
 .vscode/
