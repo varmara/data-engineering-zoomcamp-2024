@@ -5,7 +5,8 @@ In this module, I learnt how to use the Mage platform to author and share data p
 
 Mage is an open-source, hybrid framework for transforming and integrating data.
 
-- [`magic-zoomcamp`](magic-zoomcamp) - the Mage project with ETL pipelines created during classes and as a part of the homework
+- `magic-zoomcamp` - the Mage project with ETL pipelines created during classes and as a part of the homework is not included in this repo. But for the sake of example, I added the code of data loaders, transformers and exporters to the solution of the homework quiz.
+
 - [`homework-2.md`](homework_2.md) - the homework quiz
 
 ![Workflow orchestration with Mage](../images/image-2024-01-31-20.56.27.png)
