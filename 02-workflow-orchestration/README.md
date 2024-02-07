@@ -10,7 +10,7 @@ Mage is an open-source, hybrid framework for transforming and integrating data. 
 </div>
 
 - [`magic-zoomcamp`](magic-zoomcamp) - the Mage project with ETL pipelines created during classes and as a part of the homework
-- [`homework-2.md`](homework-2.md) - the homework quiz
+- [`homework-2.md`](homework_2.md) - the homework quiz
 
 ![Workflow orchestration with Mage](../images/image-2024-01-31-20.56.27.png)
 

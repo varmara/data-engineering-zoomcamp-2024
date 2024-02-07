@@ -2,11 +2,11 @@
 
 This repository documents my experience with the DataTalksClub Zoomcamp data engineering course. It contains materials and assignments used to explore and apply essential concepts:
 
-- [Module 1: Containerisation and Infrastructure as Code](01-docker-terraform/README.md) Under construction
-    - [Module 1 Homework](01-docker-terraform/homework-1.md)
+- [Module 1: Containerisation and Infrastructure as Code](01-docker-terraform) Under construction
+    - [Module 1 Homework](01-docker-terraform/homework_1.md)
 
-- [Module 2: Workflow Orchestration](02-workflow-orchestration/README.md)
-    - [Module 2 Homework](02-workflow-orchestration/homework-2.md)
+- [Module 2: Workflow Orchestration](02-workflow-orchestration)
+    - [Module 2 Homework](02-workflow-orchestration/homework_2.md)
 
 - Workshop 1: Data Ingestion
 
