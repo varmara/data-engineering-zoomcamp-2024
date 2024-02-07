@@ -30,12 +30,253 @@ The goal will be to construct an ETL pipeline that loads the data, performs some
 
 ## SOLUTION
 
-Pipeline `green_taxi_etl_homework`
-- Data loader `magic-zoomcamp/data_loaders/load_green_taxi_data.py`
-- Data transformer `magic-zoomcamp/transformers/transform_green_taxi_data.py`
-- Data exporter (Postgres, Python) `green_taxi_to_postgres.py`
-- Data exporter (GCP bucket, Python; parquet, partitioned by `lpep_pickup_date` using `pyarrow`) `green_taxi_to_gcs_partitioned_parquet.py`
 
+Pipeline `green_taxi_etl_homework`
+
+### Data loader 
+
+Data loader `magic-zoomcamp/data_loaders/load_green_taxi_data.py`
+
+```python
+import io
+import pandas as pd
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@data_loader
+def load_data_from_api(*args, **kwargs):
+    """
+    Load data from several .csv.gz
+    """
+    base_url = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_'
+    year = 2020
+    months = [10, 11, 12]
+
+    # construct urls from base_url, year and month (formatted to two digits with :02d) 
+    urls = [f"{base_url}{year}-{month:02d}.csv.gz" for month in months]
+
+    taxi_dtypes = {
+        'VendorID': pd.Int64Dtype(),
+        'passenger_count': pd.Int64Dtype(),
+        'trip_distance': float,
+        'RatecodeID':pd.Int64Dtype(),
+        'store_and_fwd_flag':str,
+        'PULocationID':pd.Int64Dtype(),
+        'DOLocationID':pd.Int64Dtype(),
+        'payment_type': pd.Int64Dtype(),
+        'fare_amount': float,
+        'extra':float,
+        'mta_tax':float,
+        'tip_amount':float,
+        'tolls_amount':float,
+        'improvement_surcharge':float,
+        'total_amount':float,
+        'congestion_surcharge':float
+    }
+    
+    # native date parsing 
+    parse_dates = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
+
+    dfs = []
+    for url in urls:
+        df = pd.read_csv(
+            url, 
+            compression='gzip', 
+            dtype=taxi_dtypes, 
+            parse_dates=parse_dates)
+        dfs.append(df)
+
+    return pd.concat(dfs, ignore_index=True)
+
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Template code for testing the output of the block.
+    """
+    assert output is not None, 'The output is undefined'
+```
+### Data transformer
+
+Data transformer `magic-zoomcamp/transformers/transform_green_taxi_data.py`
+
+```python
+import re
+import pandas as pd
+
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+def camel_to_snake(x):
+    """
+    Convert a CamelCase string to snake_case.
+
+    This function applies a regular expression to transform the input string
+    from CamelCase (also handling sequences of uppercase letters) to snake_case,
+    ensuring lowercase letters with underscores separating words.
+
+    Parameters:
+    - x (str): The CamelCase string to be converted to snake_case.
+
+    Returns:
+    - str: The converted snake_case string.
+
+    Examples:
+    >>> camel_to_snake('CamelCase')
+    'camel_case'
+    >>> camel_to_snake('CamelCamelCase')
+    'camel_camel_case'
+    >>> camel_to_snake('Camel2Camel2Case')
+    'camel2_camel2_case'
+    >>> camel_to_snake('getHTTPResponseCode')
+    'get_http_response_code'
+    >>> camel_to_snake('get2HTTPResponseCode')
+    'get2_http_response_code'
+    """
+    return re.sub(r'(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])', '_', x).lower()
+
+@transformer
+def transform(data, *args, **kwargs):
+    """
+    Cleans and transforms input data for further analysis or modeling.
+
+    1. Removes rows where passengers count or trip distance is zero, indicating invalid or incomplete trips.
+    2. Extracts the date from 'lpep_pickup_datetime' and stores it in a new column 'lpep_pickup_date'.
+    3. Renames columns from CamelCase to snake_case for consistency.
+
+    Args:
+        data (DataFrame): The input DataFrame containing green taxi trip records.
+        *args: The output from any additional upstream blocks (if applicable).
+        **kwargs: Arbitrary keyword arguments for additional parameters or configuration options.
+
+    Returns:
+        DataFrame: The transformed DataFrame with preprocessing steps applied.
+
+    Note:
+        The function assumes the input DataFrame contains specific columns ('lpep_pickup_datetime',
+        'passenger_count', 'trip_distance'). 
+    """
+
+    print(f"Q1: Data shape is {data.shape}")
+
+    # Remove trips with zero passengers or zero distance
+    print(f"Rows with zero passengers: {data['passenger_count'].isin([0]).sum()}")
+    print(f"Rows with zero trip distance: {data['trip_distance'].isin([0]).sum()}")
+    print(f"Removed { ((data['passenger_count'] == 0) | (data['trip_distance'] == 0)).sum() } rows")
+    data = data[(data['passenger_count'] > 0) & (data['trip_distance'] > 0)]
+
+    print(f"Q2: After filtering zeros {data.shape[0]} rows remain")
+
+    # Extract trip date to separate variable
+    data['lpep_pickup_date'] = data['lpep_pickup_datetime'].dt.date
+    # data['lpep_dropoff_date'] = data['lpep_dropoff_datetime'].dt.date
+
+    # Rename columns in Camel Case to Snake Case
+    data.columns = (data.columns
+                    .str.replace(' ', '_')
+                    .map(camel_to_snake)
+                    .str.lower()
+    )
+    print(f"Q4: Vendor IDs in the dataset: {data['vendor_id'].unique()}")
+    print(f"Q6: Unique pickup dates: {data['lpep_pickup_date'].nunique()}")
+
+    return data
+
+@test
+def test_output(output, *args) -> None:
+    assert output is not None, 'The output is undefined'
+
+# 1) `vendor_id` is one of the existing values in the column (currently)
+@test
+def test_vendor_id(output, *args) -> None:
+    assert 'vendor_id' in output.columns, 'There is no column `vendor_id`. Check if the columns were renamed correctly'
+
+# 2) `passenger_count` is greater than 0
+@test
+def test_passenger_count(output, *args) -> None:
+    assert all(output['passenger_count'] > 0), 'There are rows with zero `passenger_count`. Check if zeros were handled correctly'
+
+# 3) `trip_distance` is greater than 0
+@test
+def test_trip_distance(output, *args) -> None:
+    assert all(output['trip_distance'] > 0), 'There are rows with zero `trip_distance`. Check if zeros were handled correctly'
+```
+### Data exporter 
+
+Data exporter (Postgres, Python) `green_taxi_to_postgres.py`
+
+```python
+from mage_ai.settings.repo import get_repo_path
+from mage_ai.io.config import ConfigFileLoader
+from mage_ai.io.postgres import Postgres
+from pandas import DataFrame
+from os import path
+
+if 'data_exporter' not in globals():
+    from mage_ai.data_preparation.decorators import data_exporter
+
+@data_exporter
+def export_data_to_postgres(df: DataFrame, **kwargs) -> None:
+    """
+    Template for exporting data to a PostgreSQL database.
+    Specify your configuration settings in 'io_config.yaml'.
+
+    Docs: https://docs.mage.ai/design/data-loading#postgresql
+    """
+    schema_name = 'mage'  # Specify the name of the schema to export data to
+    table_name = 'green_taxi_data'  # Specify the name of the table to export data to
+    config_path = path.join(get_repo_path(), 'io_config.yaml')
+    config_profile = 'dev'
+
+    with Postgres.with_config(ConfigFileLoader(config_path, config_profile)) as loader:
+        loader.export(
+            df,
+            schema_name,
+            table_name,
+            index=False,  # Specifies whether to include index in exported table
+            if_exists='replace',  # Specify resolution policy if table name already exists
+        )
+```
+### Data exporter 
+
+Data exporter (GCP bucket, Python; parquet, partitioned by `lpep_pickup_date` using `pyarrow`) `green_taxi_to_gcs_partitioned_parquet.py`
+
+```python
+import pyarrow as pa
+import pyarrow.parquet as pq
+import os
+
+if 'data_exporter' not in globals():
+    from mage_ai.data_preparation.decorators import data_exporter
+
+# Tell pyarrow where the credentials live:
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "/home/src/path-to-your-key-file.json"
+# Define the bucket name, the project id and table name:
+bucket_name = 'your-gcs-bucket-name'
+project_id = 'your-gcp-project-id'
+table_name = 'green_taxi_data'
+# Define the root path:
+root_path = f'{bucket_name}/{table_name}'
+
+@data_exporter
+def export_data(data, *args, **kwargs):
+    # define a oyarrow table
+    table = pa.Table.from_pandas(data)
+    # find a google cloud storage
+    gcs = pa.fs.GcsFileSystem()
+    # break data into files by date and write into separate parquet files
+    pq.write_to_dataset(
+        table,
+        root_path=root_path,
+        partition_cols=['lpep_pickup_date'],
+        filesystem=gcs
+    )
+```
 ## Question 1. Data Loading
 
 Once the dataset is loaded, what's the shape of the data?
