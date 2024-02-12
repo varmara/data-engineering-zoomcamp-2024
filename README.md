@@ -8,9 +8,11 @@ This repository documents my experience with the DataTalksClub Zoomcamp data eng
 - [Module 2: Workflow Orchestration](02-workflow-orchestration)
     - [Module 2 Homework](02-workflow-orchestration/homework_2.md)
 
-- Workshop 1: Data Ingestion
+- [Workshop 1: Data Ingestion](021-workshop-1)
+    - [Workshop 1 Homework](021-workshop-1/homework_ws1.md) In progress
 
-- Module 3: Data Warehouse
+- [Module 3: Data Warehouse](03-data-warehouse)
+    - [Module 3 Homework](03-data-warehouse/homework_3.md)
 
 - Module 4: Analytics Engineering
 
