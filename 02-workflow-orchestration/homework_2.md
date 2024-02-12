@@ -33,6 +33,8 @@ The goal will be to construct an ETL pipeline that loads the data, performs some
 
 Pipeline `green_taxi_etl_homework`
 
+[ETL: API to postgres & GCP](../images/image-2024-02-07-14.55.50.png)
+
 ### Data loader 
 
 Data loader `magic-zoomcamp/data_loaders/load_green_taxi_data.py`
