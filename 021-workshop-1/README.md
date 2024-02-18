@@ -1,31 +1,23 @@
 
 # Workshop 1: Data Ingestion
 
-- url: [Workshop 1: Data Ingestion](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/workshops/dlt.md)
-- Video: [YouTube - Workshop 1: Data Ingestion](https://www.youtube.com/live/oLXhBM7nf2Q?si=ZxlAC-6kp0IBfdKt)
-- teacher: [Adrian Brudaru](https://www.linkedin.com/in/data-team/)
-
-## Summary
-
 In this workshop, we have learnt how to build data ingestion pipelines using **dlt**
 
-**dlt** (“data load tool”) is an open source library that automates data ingestion: Loading, schema management, data type detection, self healing, self maintaining, scalable extraction. Speeds up pipeline development.
+**dlt** (“data load tool”) is an open source Python library that automates data ingestion: Loading, schema management, data type detection, self healing, self maintaining, scalable extraction. Speeds up pipeline development.
 
 ​The workshop covered:
 - ​Extracting data from APIs, or files.
 - ​Normalising and loading data
 - ​Incremental loading
 
-- [Homework Quiz]([[dezoomcamp-2024-workshop-1#Homework Quiz]])
-- [Homework .ipynb]()
+- Homework [homework_ws1.ipynb](homework_ws1.ipynb)
 
 ## Resources
 
-- [Full workshop content](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/workshops/dlt_resources/data_ingestion_workshop.md)
-- Workshop notebooks:
-    - [.ipynb on GitHub](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/workshops/dlt_resources/workshop.ipynb)
-    - [Google Colab Notebook](https://colab.research.google.com/drive/1kLyD3AL-tYf_HqCXYnA3ZLwHGpzbLmoj#scrollTo=5aPjk0O3S_Ag&forceEdit=true&sandboxMode=true)
-- [Homework starter notebook](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/workshops/dlt_resources/homework_starter.ipynb)
+- Video: [YouTube - Workshop 1: Data Ingestion](https://www.youtube.com/live/oLXhBM7nf2Q?si=ZxlAC-6kp0IBfdKt)
+- Teacher: [Adrian Brudaru](https://www.linkedin.com/in/data-team/)
+- Workshop notebook [workshop.ipynb](workshop.ipynb)
+- Full workshop content url: [Workshop 1: Data Ingestion](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/cohorts/2024/workshops/dlt.md)
 - `dlt` [docs](https://dlthub.com/docs/intro)
 - `dlt` [community Slack](https://dlthub.com/community)
 
@@ -418,7 +410,8 @@ dlt pipeline taxi_data show
     - For example, a taxi ride could have a payment status, which is originally “booked” but could later be changed into “paid”, “rejected” or “cancelled”
 
 Here is how we can think about which method to use:
-![[image-2024-02-09-14.20.14-incremental-loading.png]]
+
+![incremental-loading.png](incremental-loading.png)
 
 ### Example: incremental loading via merge
 
@@ -485,62 +478,14 @@ info = pipeline.run(data,
 print(info)
 ```
 
-As you can see in your notebook, the payment status and Jack’s rating were updated after running the code.
+The payment status and Jack’s rating were updated after running the code.
 
 ## What’s next?
 
-- You could change the destination to parquet + local file system or storage bucket. See the colab bonus section.
-- You could change the destination to BigQuery. Destination & credential setup docs: https://dlthub.com/docs/dlt-ecosystem/destinations/, https://dlthub.com/docs/walkthroughs/add_credentials
+- Change the destination to parquet + local file system or storage bucket. See the colab bonus section.
+- Change the destination to BigQuery. Destination & credential setup docs: https://dlthub.com/docs/dlt-ecosystem/destinations/, https://dlthub.com/docs/walkthroughs/add_credentials
 or See the colab bonus section.
-- You could use a decorator to convert the generator into a customised dlt resource: https://dlthub.com/docs/general-usage/resource
-- You can deep dive into building more complex pipelines by following the guides:
+- Use a decorator to convert the generator into a customised dlt resource: https://dlthub.com/docs/general-usage/resource
+- Build more complex pipelines by following the guides:
     - https://dlthub.com/docs/walkthroughs
     - https://dlthub.com/docs/build-a-pipeline-tutorial
-- You can join our [Slack community](https://dlthub.com/community) and engage with us there.
-
-## Homework Quiz
-
-The [linked colab notebook](https://colab.research.google.com/drive/1Te-AT0lfh0GpChg1Rbd0ByEKOHYtWXfm#scrollTo=wLF4iXf-NR7t&forceEdit=true&sandboxMode=true) offers a few exercises to practice what you learned today.
-
-## Question 1: What is the sum of the outputs of the generator for limit = 5?
-
-- **A**: 10.234
-- **B**: 7.892
-- **C**: 8.382
-- **D**: 9.123
-
-## Question 2: What is the 13th number yielded by the generator?
-
-- **A**: 4.236
-- **B**: 3.605
-- **C**: 2.345
-- **D**: 5.678
-
-## Question 3: Append the 2 generators. After correctly appending the data, calculate the sum of all ages of people.
-
-- **A**: 353
-- **B**: 365
-- **C**: 378
-- **D**: 390
-
-## Question 4: Merge the 2 generators using the ID column. Calculate the sum of ages of all the people loaded as described above.
-
-- **A**: 205
-- **B**: 213
-- **C**: 221
-- **D**: 230
-
-Submit the solution here: [https://courses.datatalks.club/de-zoomcamp-2024/homework/workshop1](https://courses.datatalks.club/de-zoomcamp-2024/homework/workshop1)
-
-# Next steps
-
-Some example projects that others did with dlt:
-
-- Serverless dlt-dbt on cloud functions: [Article](https://docs.getdbt.com/blog/serverless-dlt-dbt-stack)
-- Bird finder: [Part 1](https://publish.obsidian.md/lough-on-data/blogs/bird-finder-via-dlt-i), [Part 2](https://publish.obsidian.md/lough-on-data/blogs/bird-finder-via-dlt-ii)
-- Event ingestion on GCP: [Article and repo](https://dlthub.com/docs/blog/streaming-pubsub-json-gcp)
-- Event ingestion on AWS: [Article and repo](https://dlthub.com/docs/blog/dlt-aws-taktile-blog)
-- Demos created by students: [Hacker news](https://dlthub.com/docs/blog/hacker-news-gpt-4-dashboard-demo), [GA4 events](https://dlthub.com/docs/blog/ga4-internal-dashboard-demo), [an E-Commerce](https://dlthub.com/docs/blog/postgresql-bigquery-metabase-demo), [google sheets](https://dlthub.com/docs/blog/google-sheets-to-data-warehouse-pipeline), [Motherduck](https://dlthub.com/docs/blog/dlt-motherduck-demo), [MongoDB + Holistics](https://dlthub.com/docs/blog/MongoDB-dlt-Holistics), [Deepnote](https://dlthub.com/docs/blog/deepnote-women-wellness-violence-tends), [Prefect](https://dlthub.com/docs/blog/dlt-prefect), [PowerBI vs GoodData vs Metabase](https://dlthub.com/docs/blog/semantic-modeling-tools-comparison), [Dagster](https://dlthub.com/docs/blog/dlt-dagster), [Ingesting events via gcp webhooks](https://dlthub.com/docs/blog/dlt-webhooks-on-cloud-functions-for-event-capture), [SAP to snowflake replication](https://dlthub.com/docs/blog/sap-hana-to-snowflake-demo-blog), [Read emails and send sumamry to slack with AI and Kestra](https://dlthub.com/docs/blog/dlt-kestra-demo-blog), [Mode +dlt capabilities](https://dlthub.com/docs/blog/dlt-mode-blog), [dbt on cloud functions](https://dlthub.com/docs/blog/dlt-dbt-runner-on-cloud-functions)
-- To use dlt in your project, [check this list of public APIs](https://dlthub.com/docs/blog/practice-api-sources)
-
-> Consider submitting a personal project to `dlt` blog.

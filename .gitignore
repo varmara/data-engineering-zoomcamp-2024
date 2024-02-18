@@ -200,3 +200,6 @@ scratch*
 magic-zoomcamp
 *.json
 
+# DuckDB
+*.duckdb
+*.duckdb.wal
