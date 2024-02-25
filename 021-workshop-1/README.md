@@ -3,14 +3,14 @@
 
 In this workshop, we have learnt how to build data ingestion pipelines using **dlt**
 
-**dlt** (“data load tool”) is an open source Python library that automates data ingestion: Loading, schema management, data type detection, self healing, self maintaining, scalable extraction. Speeds up pipeline development.
+**dlt** ("data load tool") is an open source Python library that automates data ingestion: Loading, schema management, data type detection, self healing, self maintaining, scalable extraction. Speeds up pipeline development.
 
 ​The workshop covered:
 - ​Extracting data from APIs, or files.
 - ​Normalising and loading data
 - ​Incremental loading
 
-- Homework [homework_ws1.ipynb](homework_ws1.ipynb)
+**Homework** [homework_ws1.ipynb](homework_ws1.ipynb)
 
 ## Resources
 
@@ -69,7 +69,7 @@ Managing memory:
 
 - Many data pipelines run on serverless functions or on orchestrators that delegate the workloads to clusters of small workers:
 - filling the memory/disk space might lead to crashing the entire container or machine.
-- When disk space is insufficient it can be solved by mounting an external drive mapped to a storage bucket. Example: Airflow supports a “data” folder mapping to a bucket for unlimited capacity.
+- When disk space is insufficient it can be solved by mounting an external drive mapped to a storage bucket. Example: Airflow supports a "data" folder mapping to a bucket for unlimited capacity.
 
 To avoid filling the memory, control the max memory you use (Why? Usually, the volume of data is unknown upfront and we cannot scale dynamically or infinitely).
 
@@ -206,7 +206,7 @@ if downloaded_data:
 ### Example 3: Streaming download
 
 In this example, we stream download the data and process it row-by-row.
-- `.jsonl` file is already split into lines (each line is a json document, or a “row” of data) making the code simpler
+- `.jsonl` file is already split into lines (each line is a json document, or a "row" of data) making the code simpler
 - `.json` files could also be downloaded in this fashion, e.g., using the `ijson` library.
 
 Pros: **High throughput, easy memory management**
@@ -350,7 +350,7 @@ Now let’s normalise this data using `dlt`
 dlt can handle things like:
 
 - Schema: Inferring and evolving schema, alerting changes, using schemas as data contracts.
-- Typing data, flattening structures, renaming columns to fit database standards. (in the example we will pass the “data” above and see it normalised).
+- Typing data, flattening structures, renaming columns to fit database standards. (in the example we will pass the "data" above and see it normalised).
 - Processing a stream of events/rows without filling memory, including extraction from generators.
 - Loading to a variety of dbs or file formats.
 
@@ -404,18 +404,18 @@ dlt pipeline taxi_data show
 
 1. `Append`:
     - We can use this for _immutable_ or _stateless_ events (data that doesn’t change), such as taxi rides, do not need the entire history.
-    - We could also use this to load different versions of _stateful_ data, for example for creating a _“slowly changing dimension” table for auditing changes_. For example, if we load a list of cars and their colours every day, and one day one car changes color, we need both sets of data to be able to discern that a change happened.
+    - We could also use this to load different versions of _stateful_ data, for example for creating a _"slowly changing dimension" table for auditing changes_. For example, if we load a list of cars and their colours every day, and one day one car changes color, we need both sets of data to be able to discern that a change happened.
 2. `Merge`:
     - We can use this to update data that changes.
-    - For example, a taxi ride could have a payment status, which is originally “booked” but could later be changed into “paid”, “rejected” or “cancelled”
+    - For example, a taxi ride could have a payment status, which is originally "booked" but could later be changed into 'paid", "rejected" or "cancelled"
 
 Here is how we can think about which method to use:
 
-![incremental-loading.png](incremental-loading.png)
+![incremental loading](/021-workshop-1/incremental_loading.png)
 
 ### Example: incremental loading via merge
 
-- For example, a taxi ride could have a payment status, which is originally “booked”, but later changed from "booked" to “cancelled”. Perhaps Jack likes to fraud taxis and that explains his low rating. Besides the ride status change, he also got his rating lowered further.
+- For example, a taxi ride could have a payment status, which is originally "booked", but later changed from "booked" to "cancelled". Perhaps Jack likes to fraud taxis and that explains his low rating. Besides the ride status change, he also got his rating lowered further.
 - The merge operation replaces an old record with a new one based on a key (multiple fields or a single unique id, or a record hash - as in the example).
 - A merge operation replaces rows, it does not update them. To update only parts of a row, you would have to load the new data by appending it and doing a custom transformation to combine the old and new data.
 
