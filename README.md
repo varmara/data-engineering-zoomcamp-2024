@@ -14,7 +14,8 @@ This repository documents my experience with the DataTalksClub Zoomcamp data eng
 - [Module 3: Data Warehouse](03-data-warehouse)
     - [Module 3 Homework](03-data-warehouse/homework_3.md)
 
-- Module 4: Analytics Engineering
+- [Module 4: Analytics Engineering](04-analytics-engineering)
+    - [Module 4 Homework](04-analytics-engineering/homework_4.md)
 
 - Module 5: Batch processing
 

@@ -203,3 +203,7 @@ magic-zoomcamp
 # DuckDB
 *.duckdb
 *.duckdb.wal
+
+# Data files
+*.csv.gz
+*.parquet
