@@ -1,5 +1,5 @@
 
-## Data Engineering Zoomcamp - Week 2
+# Data Engineering Zoomcamp 2024 - Module 2: Workflow Orchestration
 
 In this module, I learnt how to use the Mage platform to author and share data pipelines. 
 

@@ -1,13 +1,11 @@
-# Week 1-2
+# Data Engineering Zoomcamp 2024 - Module 1 Homework: Docker and Terraform
 
-## Module 1 Homework
-
-### Docker & SQL
+## Docker & SQL
 
 In this homework we'll prepare the environment
 and practice with Docker and SQL
 
-#### Question 1. Knowing docker tags
+### Question 1. Knowing docker tags
 
 Run the command to get information on Docker
 
@@ -26,11 +24,11 @@ Which tag has the following text? - _Automatically remove the container when it 
 - `--rmc`
 + `--rm`
 
-##### Solution:
+#### Solution:
 
 --rm
 
-#### Question 2. Understanding docker first run
+### Question 2. Understanding docker first run
 
 Run docker with the python:3.9 image in an interactive mode and the entrypoint of bash.
 Now check the python modules that are installed ( use ```pip list``` ).
@@ -42,11 +40,11 @@ What is version of the package _wheel_ ?
 - 23.0.1
 - 58.1.0
 
-##### Solution:
+#### Solution:
 
 0.42.0
 
-### Prepare Postgres
+## Prepare Postgres
 
 Run Postgres and load data as shown in the videos
 We'll use the green taxi trips from September 2019:
@@ -59,7 +57,7 @@ You will also need the dataset with zones:
 
 Download this data and put it into Postgres (with jupyter notebooks or with a pipeline)
 
-#### Question 3. Count records
+### Question 3. Count records
 
 How many taxi trips were totally made on September 18th 2019?
 
@@ -72,7 +70,7 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 15859
 - 89009
 
-##### Solution:
+#### Solution:
 
 15767
 
@@ -80,7 +78,7 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 select count(1) from green_taxi_data where date(lpep_pickup_datetime) = '2019-09-18';
 ```
 
-#### Question 4. Largest trip for each day
+### Question 4. Largest trip for each day
 
 Which was the pick up day with the largest trip distance
 Use the pick up time for your calculations.
@@ -90,7 +88,7 @@ Use the pick up time for your calculations.
 + 2019-09-26
 - 2019-09-21
 
-##### Solution:
+#### Solution:
 
 2019-09-26
 
@@ -101,7 +99,7 @@ ORDER BY trip_distance DESC
 LIMIT 1;
 ```
 
-#### Question 5. Three biggest pick up Boroughs
+### Question 5. Three biggest pick up Boroughs
 
 Consider lpep_pickup_datetime in '2019-09-18' and ignoring Borough has Unknown
 
@@ -112,7 +110,7 @@ Which were the 3 pick up Boroughs that had a sum of total_amount superior to 500
 - "Bronx" "Manhattan" "Queens"
 - "Brooklyn" "Queens" "Staten Island"
 
-##### Solution:
+#### Solution:
 
 "Brooklyn" "Manhattan" "Queens"
 
@@ -138,7 +136,7 @@ GROUP BY "Borough"
 HAVING SUM(total_amount) > 50000;
 ```
 
-#### Question 6. Largest tip
+### Question 6. Largest tip
 
 For the passengers picked up in September 2019 in the zone name Astoria which was the drop off zone that had the largest tip?
 We want the name of the zone, not the id.
@@ -150,7 +148,7 @@ Note: it's not a typo, it's `tip` , not `trip`
 + JFK Airport
 - Long Island City/Queens Plaza
 
-##### Solution:
+#### Solution:
 
 JFK Airport
 
@@ -169,7 +167,7 @@ ORDER BY tip_amount DESC
 LIMIT 10;
 ```
 
-### Terraform
+## Terraform
 
 In this section of homework we'll prepare the environment by creating resources in GCP with Terraform.
 
@@ -179,7 +177,7 @@ Copy the files from the course repo
 
 Modify the files as necessary to create a GCP Bucket and Big Query Dataset.
 
-#### Question 7. Creating Resources
+### Question 7. Creating Resources
 
 After updating the main.tf and variable.tf files run:
 
@@ -189,7 +187,7 @@ terraform apply
 
 Paste the output of this command into the homework submission form.
 
-##### Solution:
+#### Solution:
 
 ```
 

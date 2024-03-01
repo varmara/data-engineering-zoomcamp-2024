@@ -1,24 +1,20 @@
-# Module 4 Homework
+# Data Engineering Zoomcamp 2024 - Module 4 Homework
 
-## Assignment
+In this homework, we extended the models developed in the dbt project during the week 4 to include the data for fhv vehicles in our DWH.
 
-In this homework, we'll use the models developed during the week 4 videos and enhance the already presented dbt project using the already loaded Taxi data for fhv vehicles for year 2019 in our DWH.
-
-This means that in this homework we use the following data [Datasets list](https://github.com/DataTalksClub/nyc-tlc-data/)
+[Datasets list](https://github.com/DataTalksClub/nyc-tlc-data/)
 * Yellow taxi data - Years 2019 and 2020
 * Green taxi data - Years 2019 and 2020
 * fhv data - Year 2019.
 
-We will use the data loaded for:
-
-* Building a source table: `stg_fhv_tripdata`
-* Building a fact table: `fact_fhv_trips`
+The data were used to:
+* Build a source table: `stg_fhv_tripdata`
+* Build a fact table: `fact_fhv_trips`
 * Create a dashboard
 
-If you don't have access to GCP, you can do this locally using the ingested data from your Postgres database
-instead. If you have access to GCP, you don't need to do it for local Postgres - only if you want to.
+Lineage graph:
 
-> **Note**: if your answer doesn't match exactly, select the closest option
+![dbt project lineage](images/dezoomcamp-dbt-project-lineage.png)
 
 ### Question 1:
 
@@ -30,7 +26,7 @@ You'll need to have completed the ["Build the first dbt models"](https://www.you
 - It applies a _limit 100_ only to our staging models
 - Nothing
 
-**Solution**: It applies a _limit 100_ only to our staging models
+**Answer**: It applies a _limit 100_ only to our staging models
 
 ### Question 2:
 
@@ -41,7 +37,7 @@ You'll need to have completed the ["Build the first dbt models"](https://www.you
 - The code from any development branch that has been opened based on main
 - The code from the development branch we are requesting to merge to main
 
-**Solution**: The code from the development branch we are requesting to merge to main
+**Answer**: The code from the development branch we are requesting to merge to main
 
 ### Question 3 (2 points)
 
@@ -58,8 +54,7 @@ Run the dbt model without limits (is_test_run: false).
 - 32998722
 - 42998722
 
-**Solution**: 42998722
-
+**Answer**: 22998722 (see solution below)
 ### Question 4 (2 points)
 
 **What is the service that had the most rides during the month of July 2019 month with the biggest amount of rides after building a tile for the fact_fhv_trips table?**
@@ -71,28 +66,17 @@ Create a dashboard with some tiles that you find interesting to explore the data
 - Yellow
 - FHV and Green
 
-**Solution**: Yellow
+**Answer**: Yellow (see solution below)
+
 ## Homework Solution
 
-### Preparing data
-
-#### Upploading data to GCS
+### Upploading data to GCS
 
 For uploading green and yellow taxi data for 2019-2020, to GCS I modified `web_to_gcs.py` (from [[dezoomcamp-2024-module-3|Module 3: Data Warehouse]] extras).
 
-Install necessary packages
-
-`pip install pandas pyarrow google-cloud-storage`
-
-Set GOOGLE_APPLICATION_CREDENTIALS to your project/service-account key
-
-`export GOOGLE_APPLICATION_CREDENTIALS='/home/varmara/40_learning/data-engineering-zoomcamp-2024/01-docker-terraform/keys/plasma-bison-411917-a3b9e926eda8.json'`
-
-Set GCP_GCS_BUCKET as your bucket
-
-`export GCP_GCS_BUCKET='dezoomcamp-mage-varmara-1'`
-
-Run `web_to_gcs.py`. The modified version of the script accounts for data types while reading gzipped csv files from the New-York taxi data in the course repository.
+- Install necessary packages (pandas, pyarrow, google-cloud-storage)
+- Set GOOGLE_APPLICATION_CREDENTIALS to the project/service-account key. Set GCP_GCS_BUCKET as your bucket.
+- Run `web_to_gcs.py`. The modified version of the script accounts for data types while reading gzipped csv files from the New-York taxi data in the course repository.
 
 ### Creating tables in BigQuery
 
@@ -100,18 +84,11 @@ I created external tables in BigQuery and materialised them using the adapted SQ
 
 ### Setting up the dbt project
 
-- A [dbt homework project](https://github.com/varmara/dbt-project_data-engineering) repository
-
-In BigQuery:
-
+In BigQuery
 - Create a service account credentials (or use the earlier created .json)
-
-In GitHub:
-
+In GitHub
 - Create an empty GitHub repo
-
-In dbt Cloud:
-
+In dbt
 - Create a new dbt project
 - Set up the connection of dbt to BigQuery (create and upload a json key)
 - Connect dbt to your GitHub account (it is possible to restrict access to this particular repo)
@@ -124,7 +101,6 @@ In dbt Cloud:
 For green and yellow taxi data I followed the course videos
 
 For fhv data:
-
 - Add fhv_tripdata to the sources
 - Create a stg_fhv_tripdata.sql model
 - Add the fields from the table to the schema
@@ -132,3 +108,41 @@ For fhv data:
 - build the model
 
 Answers to the assignment questions are in the Assignment section
+
+### Solution to question 3
+
+**What is the count of records in the model fact_fhv_trips after running all dependencies with the test run variable disabled (:false)?**  
+
+```sql
+select count(*) from {{ ref("fact_fhv_trips") }}
+```
+
+### Solution to question 4
+
+**What is the service that had the most rides during the month of July 2019 month with the biggest amount of rides after building a tile for the fact_fhv_trips table?**
+
+```sql
+with
+    green_and_yellow_data as (
+        select service_type, count(*) as total_records
+        from {{ ref("fact_trips") }}
+        where
+            extract(year from pickup_datetime) = 2019
+            and extract(month from pickup_datetime) = 7
+        group by 1
+    ),
+    fhv_data as (
+        select service_type, count(*) as total_records
+        from {{ ref("fact_fhv_trips") }}
+        where
+            extract(year from pickup_datetime) = 2019
+            and extract(month from pickup_datetime) = 7
+        group by 1
+    )
+
+select *
+from green_and_yellow_data
+union all
+select *
+from fhv_data
+```

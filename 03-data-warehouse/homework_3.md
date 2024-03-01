@@ -1,4 +1,4 @@
-# Week 3 Homework
+# Data Engineering Zoomcamp 2024 - Module 3 Homework: Data Warehouse (BigQuery)
 
 ## Assignment
 

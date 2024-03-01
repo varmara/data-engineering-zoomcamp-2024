@@ -1,5 +1,5 @@
 
-# Workshop 1: Data Ingestion
+# Data Engineering Zoomcamp 2024 - Workshop 1: Data Ingestion
 
 In this workshop, we have learnt how to build data ingestion pipelines using **dlt**
 
@@ -10,7 +10,7 @@ In this workshop, we have learnt how to build data ingestion pipelines using **d
 - ​Normalising and loading data
 - ​Incremental loading
 
-**Homework** [homework_ws1.ipynb](homework_ws1.ipynb)
+**Homework** [homework_ws1.ipynb](/homework_ws1.ipynb)
 
 ## Resources
 

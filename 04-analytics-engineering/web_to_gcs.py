@@ -111,7 +111,7 @@ schema_fhv = {
     'dispatching_base_num':str,
     'PUlocationID':pd.Int64Dtype(),
     'DOlocationID':pd.Int64Dtype(),
-    'SR_Flag':str,
+    'SR_Flag':pd.Int64Dtype(),
     'Affiliated_base_number':str
 }
 
