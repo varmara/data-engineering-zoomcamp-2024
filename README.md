@@ -35,7 +35,7 @@ This repository documents my experience with the DataTalksClub Zoomcamp data eng
     - [Module 4 Homework](04-analytics-engineering/homework_4.md)
 
 - [Module 5: Batch processing](05-batch-processing)
-    - [Modue 5 Homework](05-batch-processing/homework_5.md)
+    - [Modue 5 Homework](05-batch-processing/homework_5.ipynb)
 
 - Module 6: Streaming
 
