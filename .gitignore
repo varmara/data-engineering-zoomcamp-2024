@@ -207,3 +207,7 @@ magic-zoomcamp
 # Data files
 *.csv.gz
 *.parquet
+*_SUCCESS
+*_SUCCESS.crc
+.part*.crc
+.csv

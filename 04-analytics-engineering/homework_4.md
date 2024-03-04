@@ -15,7 +15,7 @@ The data were used to:
 Lineage graph:
 
 ![dbt project lineage](images/dezoomcamp-dbt-project-lineage.png)
-
+ 
 ### Question 1:
 
 **What happens when we execute dbt build --vars '{'is_test_run':'true'}'**
