@@ -1,0 +1,9 @@
+activate/
+.venv/
+dashboards/
+grafana*
+prometheus*
+risingwave.toml
+homework/
+.DS_Store
+slides.key

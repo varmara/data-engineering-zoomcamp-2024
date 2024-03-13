@@ -37,6 +37,9 @@ This repository documents my experience with the DataTalksClub Zoomcamp data eng
 - [Module 5: Batch processing](05-batch-processing)
     - [Modue 5 Homework](05-batch-processing/homework_5.ipynb)
 
+- [Workshop 2: Stream processing with RisingWave](051-workshop-2-stream-processing-risingwave)
+    - [Workshop 2 Homework](051-workshop-2-stream-processing-risingwave/homework_ws2.md)
+
 - Module 6: Streaming
 
 - Weeks 7, 8, 9: Project
